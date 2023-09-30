@@ -5,6 +5,12 @@
 
 const int NUMBER_OF_ELEMENTS = 100;
 
+void print(std::string coins[]) {
+  for (int i = 0; i < NUMBER_OF_ELEMENTS; ++i) {
+    std::cout << coins[i] << std::endl;
+  }
+}
+
 int linearSearch(std::string coin, std::string coins[]) {
   for (int i = 0; i < NUMBER_OF_ELEMENTS; ++i) {
     if (coins[i] == coin) {
