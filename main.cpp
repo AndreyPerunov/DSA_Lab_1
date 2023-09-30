@@ -11,7 +11,7 @@ int main() {
   std::ifstream file("coins.data");
 
   if (!file) {
-    std::cout << "Unable to open file." << std::endl;
+    std::cerr << "Unable to open file." << std::endl;
     return 1;
   }
 
