@@ -13,3 +13,6 @@
 athlet_age.data
 games.data
 quotes.data
+
+#others
+*.tmp
