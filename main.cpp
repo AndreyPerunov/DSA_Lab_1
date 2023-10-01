@@ -122,7 +122,7 @@ int main() {
   readData("coins.txt", coins1);
   readData("coins.txt", coins2);
   
-  std::cout << std::endl << "Insertions Sort: " << std::endl;
+  std::cout << std::endl << "Selection Sort: " << std::endl;
   auto start1 = std::chrono::high_resolution_clock::now();
   selectionSort(coins1, transpositions1, comparisons1);
   auto end1 = std::chrono::high_resolution_clock::now();
