@@ -135,7 +135,7 @@ int main() {
   std::chrono::duration<float> duration2 = end2 - start2;
 
 
-  std::cout << std::endl << "Insertions Sort Benchmark: " << std::endl;
+  std::cout << std::endl << "Selection Sort Benchmark: " << std::endl;
   std::cout << "  Number of Transpositions: " << transpositions1 << std::endl;
   std::cout << "  Number of Comparisons: " << comparisons1 << std::endl;
   std::cout << "  Time: " << duration1.count()*1000 << "ms" << std::endl << std::endl;
