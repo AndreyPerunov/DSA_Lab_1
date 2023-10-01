@@ -3,46 +3,49 @@
 #include <fstream>
 #include <string>
 
-const int NUMBER_OF_ELEMENTS = 100;
+const int NUMBER_OF_ELEMENTS = 10;
 
-void print(std::string coins[]) {
+void print(int array[]) {
   for (int i = 0; i < NUMBER_OF_ELEMENTS; ++i) {
-    std::cout << coins[i] << std::endl;
+    std::cout << array[i] << std::endl;
   }
 }
 
-int linearSearch(std::string coin, std::string coins[]) {
-  for (int i = 0; i < NUMBER_OF_ELEMENTS; ++i) {
-    if (coins[i] == coin) {
-      return i;
+int findSmallest(int array[]) {
+  int smallestIndex = 0;
+  for (int i = 1; i < NUMBER_OF_ELEMENTS; ++i) {
+    if (array[i] < array[smallestIndex]) {
+      smallestIndex = i;
     }
   }
-  throw std::runtime_error("Element not found.");
+  return smallestIndex;
+}
+
+void readData(std::string filename, int arr[]) {
+    std::ifstream file(filename);
+
+    if (!file.is_open()) {
+        std::cerr << "Error opening file" << std::endl;
+        return;
+    }
+
+    std::string line;
+    int count = 0;
+
+     while (count < NUMBER_OF_ELEMENTS && getline(file, line)) {
+        try {
+            arr[count] = std::stoi(line);
+            count++;
+        } catch (const std::invalid_argument& e) {
+            std::cerr << "Error reading line number " << count + 1 << std::endl << std::endl;
+        }
+    }
+
+    file.close();
 }
 
 int main() {
-  std::string coins[NUMBER_OF_ELEMENTS];
-
-  std::ifstream file("coins.data");
-
-  if (!file) {
-    std::cerr << "Unable to open file." << std::endl;
-    return 1;
-  }
-
-  int lineCount = 0;
-  std::string line;
-
-  while (std::getline(file, line)) {
-    if (lineCount < NUMBER_OF_ELEMENTS) {
-      coins[lineCount] = line;
-      lineCount++;
-    } else {
-      break;
-    }
-  }
-
-  file.close();
-
+  int coins[NUMBER_OF_ELEMENTS] = {0};
+  readData("coins.txt", coins);
   return 0;
 }
