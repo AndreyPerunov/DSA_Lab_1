@@ -7,13 +7,14 @@ const int NUMBER_OF_ELEMENTS = 10;
 
 void print(int array[]) {
   for (int i = 0; i < NUMBER_OF_ELEMENTS; ++i) {
-    std::cout << array[i] << std::endl;
+    std::cout << array[i] << "; ";
   }
+  std::cout<<std::endl;
 }
 
-int findSmallest(int array[]) {
-  int smallestIndex = 0;
-  for (int i = 1; i < NUMBER_OF_ELEMENTS; ++i) {
+int findSmallest(int array[], int skip) {
+  int smallestIndex = skip;
+  for (int i = skip + 1; i < NUMBER_OF_ELEMENTS; ++i) {
     if (array[i] < array[smallestIndex]) {
       smallestIndex = i;
     }
@@ -44,8 +45,21 @@ void readData(std::string filename, int arr[]) {
     file.close();
 }
 
+void swap(int &a, int &b) {
+    int temp = a;
+    a = b;
+    b = temp;
+}
+
+void insertionSort(int array[]){
+  for (int i = 0; i < NUMBER_OF_ELEMENTS; i++) {
+    swap(array[i], array[findSmallest(array, i)]);
+  }
+}
+
 int main() {
   int coins[NUMBER_OF_ELEMENTS] = {0};
   readData("coins.txt", coins);
+  insertionSort(coins);
   return 0;
 }
