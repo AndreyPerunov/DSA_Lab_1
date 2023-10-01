@@ -2,7 +2,7 @@
 #include <fstream>
 #include <string>
 
-const int NUMBER_OF_ELEMENTS = 1000;
+const int NUMBER_OF_ELEMENTS = 100;
 
 void print(int array[]) {
   for (int i = 0; i < NUMBER_OF_ELEMENTS; ++i) {
@@ -11,9 +11,10 @@ void print(int array[]) {
   std::cout<<std::endl;
 }
 
-int findSmallest(int array[], int skip) {
+int findSmallest(int array[], int skip, int &comparisons) {
   int smallestIndex = skip;
   for (int i = skip + 1; i < NUMBER_OF_ELEMENTS; ++i) {
+    comparisons++;
     if (array[i] < array[smallestIndex]) {
       smallestIndex = i;
     }
@@ -37,7 +38,7 @@ void readData(std::string filename, int arr[]) {
       arr[count] = std::stoi(line);
       count++;
     } catch (const std::invalid_argument& e) {
-      std::cerr << "Error reading line number " << count + 1 << std::endl << std::endl;
+      std::cerr << "Error reading line number " << count + 1 << std::endl;
     }
   }
 
@@ -50,18 +51,19 @@ void swap(int &a, int &b) {
   b = temp;
 }
 
-void insertionSort(int array[], int &transpositions){
+void insertionSort(int array[], int &transpositions, int &comparisons){
   for (int i = 0; i < NUMBER_OF_ELEMENTS; i++) {
-    swap(array[i], array[findSmallest(array, i)]);
+    swap(array[i], array[findSmallest(array, i, comparisons)]);
     transpositions++;
   }
 }
 
-int partition(int array[], int low, int high, int &transpositions) {
+int partition(int array[], int low, int high, int &transpositions, int &comparisons) {
   int pivot = array[low];
   int leftwall = low;
 
   for (int i = low + 1; i <= high; i++) {
+    comparisons++;
     if (array[i] < pivot) {
       leftwall++;
       swap(array[i], array[leftwall]);
@@ -74,11 +76,12 @@ int partition(int array[], int low, int high, int &transpositions) {
   return leftwall;
 }
 
-void quickSort(int array[], int low, int high, int &transpositions){
+void quickSort(int array[], int low, int high, int &transpositions, int &comparisons){
+  comparisons++;
   if (low < high) {
-    int pivotLocation = partition(array, low, high, transpositions);
-    quickSort(array, low, pivotLocation, transpositions);
-    quickSort(array, pivotLocation + 1, high, transpositions);
+    int pivotLocation = partition(array, low, high, transpositions, comparisons);
+    quickSort(array, low, pivotLocation, transpositions, comparisons);
+    quickSort(array, pivotLocation + 1, high, transpositions, comparisons);
   }
 }
 
@@ -86,18 +89,23 @@ int main() {
   int coins1[NUMBER_OF_ELEMENTS] = {0};
   int coins2[NUMBER_OF_ELEMENTS] = {0};
   int transpositions;
+  int comparisons;
   readData("coins.txt", coins1);
   readData("coins.txt", coins2);
   
-  std::cout << "Insertions Sort: " << std::endl;
+  std::cout << std::endl << "Insertions Sort: " << std::endl;
   transpositions = 0;
-  insertionSort(coins1, transpositions);
-  std::cout << "Number of Transpositions: " << transpositions << std::endl << std::endl;
+  comparisons = 0;
+  insertionSort(coins1, transpositions, comparisons);
+  std::cout << "Number of Transpositions: " << transpositions << std::endl;
+  std::cout << "Number of Comparisons: " << comparisons << std::endl << std::endl;
   
   std::cout << "Quick Sort: " << std::endl;
   transpositions = 0;
-  quickSort(coins2, 0, NUMBER_OF_ELEMENTS - 1, transpositions);
+  comparisons = 0;
+  quickSort(coins2, 0, NUMBER_OF_ELEMENTS - 1, transpositions, comparisons);
   std::cout << "Number of Transpositions: " << transpositions << std::endl;
+  std::cout << "Number of Comparisons: " << comparisons << std::endl;
 
   return 0;
 }
