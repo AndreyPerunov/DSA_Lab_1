@@ -1,13 +1,12 @@
-// Sort coins by Market Value
 #include <iostream>
 #include <fstream>
 #include <string>
 
-const int NUMBER_OF_ELEMENTS = 10;
+const int NUMBER_OF_ELEMENTS = 1000;
 
 void print(int array[]) {
   for (int i = 0; i < NUMBER_OF_ELEMENTS; ++i) {
-    std::cout << array[i] << "; ";
+    std::cout << "  " << array[i] << "; ";
   }
   std::cout<<std::endl;
 }
@@ -51,13 +50,14 @@ void swap(int &a, int &b) {
   b = temp;
 }
 
-void insertionSort(int array[]){
+void insertionSort(int array[], int &transpositions){
   for (int i = 0; i < NUMBER_OF_ELEMENTS; i++) {
     swap(array[i], array[findSmallest(array, i)]);
+    transpositions++;
   }
 }
 
-int partition(int array[], int low, int high) {
+int partition(int array[], int low, int high, int &transpositions) {
   int pivot = array[low];
   int leftwall = low;
 
@@ -65,23 +65,39 @@ int partition(int array[], int low, int high) {
     if (array[i] < pivot) {
       leftwall++;
       swap(array[i], array[leftwall]);
+      transpositions++;
     }
   }
 
   swap(array[low], array[leftwall]);
+  transpositions++;
   return leftwall;
 }
 
-void quickSort(int array[], int low, int high){
+void quickSort(int array[], int low, int high, int &transpositions){
   if (low < high) {
-    int pivotLocation = partition(array, low, high);
-    quickSort(array, low, pivotLocation);
-    quickSort(array, pivotLocation + 1, high);
+    int pivotLocation = partition(array, low, high, transpositions);
+    quickSort(array, low, pivotLocation, transpositions);
+    quickSort(array, pivotLocation + 1, high, transpositions);
   }
 }
 
 int main() {
-  int coins[NUMBER_OF_ELEMENTS] = {0};
-  readData("coins.txt", coins);
+  int coins1[NUMBER_OF_ELEMENTS] = {0};
+  int coins2[NUMBER_OF_ELEMENTS] = {0};
+  int transpositions;
+  readData("coins.txt", coins1);
+  readData("coins.txt", coins2);
+  
+  std::cout << "Insertions Sort: " << std::endl;
+  transpositions = 0;
+  insertionSort(coins1, transpositions);
+  std::cout << "Number of Transpositions: " << transpositions << std::endl << std::endl;
+  
+  std::cout << "Quick Sort: " << std::endl;
+  transpositions = 0;
+  quickSort(coins2, 0, NUMBER_OF_ELEMENTS - 1, transpositions);
+  std::cout << "Number of Transpositions: " << transpositions << std::endl;
+
   return 0;
 }
