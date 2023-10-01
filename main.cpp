@@ -1,8 +1,9 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <chrono>
 
-const int NUMBER_OF_ELEMENTS = 100;
+const int NUMBER_OF_ELEMENTS = 9999;
 
 void print(int array[]) {
   for (int i = 0; i < NUMBER_OF_ELEMENTS; ++i) {
@@ -96,16 +97,25 @@ int main() {
   std::cout << std::endl << "Insertions Sort: " << std::endl;
   transpositions = 0;
   comparisons = 0;
+  auto start1 = std::chrono::high_resolution_clock::now();
   insertionSort(coins1, transpositions, comparisons);
+  auto end1 = std::chrono::high_resolution_clock::now();
   std::cout << "Number of Transpositions: " << transpositions << std::endl;
-  std::cout << "Number of Comparisons: " << comparisons << std::endl << std::endl;
+  std::cout << "Number of Comparisons: " << comparisons << std::endl;
+  std::chrono::duration<float> duration1 = end1 - start1;
+  std::cout << "Time: " << duration1.count()*1000 << "ms" << std::endl << std::endl;
+  
   
   std::cout << "Quick Sort: " << std::endl;
   transpositions = 0;
   comparisons = 0;
+  auto start2 = std::chrono::high_resolution_clock::now();
   quickSort(coins2, 0, NUMBER_OF_ELEMENTS - 1, transpositions, comparisons);
+  auto end2 = std::chrono::high_resolution_clock::now();
   std::cout << "Number of Transpositions: " << transpositions << std::endl;
   std::cout << "Number of Comparisons: " << comparisons << std::endl;
+  std::chrono::duration<float> duration2 = end2 - start2;
+  std::cout << "Time: " << duration2.count()*1000 << "ms" << std::endl << std::endl;
 
   return 0;
 }
