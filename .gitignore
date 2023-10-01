@@ -1,3 +1,15 @@
+#config files
 .vscode/*
 .vscode
+
+#compiled files
 *.exe
+
+#report and task documents
+*.doc
+*.docx
+
+#other individual tasks
+athlet_age.data
+games.data
+quotes.data
